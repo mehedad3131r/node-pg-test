@@ -47,7 +47,9 @@ app.get('/', (req, res) => {
           console.log(err)
         }else{
         ret_catid =req.category_id;
-          do {
+
+        while (cat_res.rows[0].parent_id != null)
+           {
             pool.query("SELECT Id FROM categories WHERE morph_id = "+ret_catid+" AND type =category", (err, cat_res) => {
               if (err) {
                 console.log(err)
@@ -65,7 +67,7 @@ app.get('/', (req, res) => {
               pool.end();
             });
             
-          } while (cat_res.parent_id != null);
+          };
         }
         pool.end();
         });
