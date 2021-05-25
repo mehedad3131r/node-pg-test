@@ -27,17 +27,14 @@ app.get('/', (req, res) => {
         pool.query("SELECT Id FROM discounts WHERE morph_id ="+req.product_id+"AND type =product", (err, res) => {
         if (err) {
           console.log(err)
-          let response = {
-            is_discount: false,
-            price:0
-          }
         }else{
         let pr_response = {
           is_discount: true,
           price:res.rows[0].price
         }
         if(pr_response.price > 0){
-          return pr_response
+          res.send(pr_response)
+          // return pr_response
         }
         }
         pool.end();
@@ -61,7 +58,8 @@ app.get('/', (req, res) => {
               }
               ret_catid = cat_res.rows[0].parent_id;
               if(prc_response.price > 0){
-                return prc_response
+                res.send(prc_response)
+                // return prc_response
               }
               }
               pool.end();
@@ -71,9 +69,10 @@ app.get('/', (req, res) => {
         }
         pool.end();
         });
-        return response;
+        res.send(response)
+        // return response;
 
-  res.send('Hello World!')
+  
 })
 
 app.listen(port, () => {
